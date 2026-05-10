@@ -20,7 +20,7 @@ URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sh
 
 @st.cache_data(ttl=300)  # atualiza a cada 5 minutos
 def carregar_dados():
-    df = pd.read_csv(URL)
+    df = pd.read_csv(URL, decimal=",")
     return df
 
 df = carregar_dados()
@@ -37,7 +37,7 @@ fig = px.bar(
     x="Ano",
     y="Total",
     text="Total",
-    color_discrete_sequence=["#FC4C02"]  # laranja Strava
+    color_discrete_sequence=["#FC4C02"]
 )
 
 fig.update_traces(textposition="outside")
