@@ -147,3 +147,5 @@ with col4:
                        xaxis_title="Ano", yaxis_title="min/km",
                        yaxis_autorange="reversed")
     st.plotly_chart(fig4, use_container_width=True)
+
+st.write(df.head())
