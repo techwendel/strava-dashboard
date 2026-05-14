@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from google import genai
 
 # =========================================================
 # CONFIGURAÇÃO DA PÁGINA
@@ -45,6 +46,29 @@ def carregar_dados():
     return df
 
 df = carregar_dados()
+client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+dados_texto = df.to_string(index=False)
+
+contexto = f"""
+Você é um assistente analítico especializado em corrida e visualização de dados.
+
+O usuário está analisando um dashboard Streamlit contendo:
+- total de corridas
+- distância por ano
+- duração total
+- pace médio
+- evolução temporal das atividades
+
+Regras:
+- Use apenas os dados fornecidos
+- Não invente informações
+- Seja claro e objetivo
+- Responda em português
+- Caso a resposta não esteja nos dados, diga isso claramente
+
+Dados:
+{dados_texto}
+"""
 
 # =========================================================
 # TÍTULO
@@ -148,4 +172,20 @@ with col4:
                        yaxis_autorange="reversed")
     st.plotly_chart(fig4, use_container_width=True)
 
-st.write(df.head())
+st.divider()
+st.subheader("💬 Converse com os dados")
+pergunta = st.chat_input("Faça uma pergunta sobre os dados...")
+
+if pergunta:
+
+    prompt_final = contexto + f"\n\nPergunta do usuário:\n{pergunta}"
+
+    resposta = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt_final
+    )
+
+    st.chat_message("user").write(pergunta)
+    st.chat_message("assistant").write(resposta.text)
+
+#st.write(df.head())
