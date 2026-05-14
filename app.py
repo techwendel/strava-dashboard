@@ -60,6 +60,9 @@ O usuário está analisando um dashboard Streamlit contendo:
 - evolução temporal das atividades
 
 Regras:
+- Nunca liste todos os valores numéricos brutos
+- Forneça respostas resumidas e interpretativas
+- Sempre priorize síntese ao invés de cálculos detalhados
 - Use apenas os dados fornecidos
 - Não invente informações
 - Seja claro e objetivo
